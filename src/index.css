@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+/* =========================
+   Clash Grotesk
+   ========================= */
+@font-face {
+    font-family: "Clash";
+    src: url("assets/fonts/clash/ClashGrotesk-Extralight.otf") format("opentype");
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Clash";
+    src: url("assets/fonts/clash/ClashGrotesk-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Clash";
+    src: url("assets/fonts/clash/ClashGrotesk-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Clash";
+    src: url("assets/fonts/clash/ClashGrotesk-Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Clash";
+    src: url("assets/fonts/clash/ClashGrotesk-Semibold.otf") format("opentype");
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Clash";
+    src: url("assets/fonts/clash/ClashGrotesk-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* =========================
+   General Sans
+   ========================= */
+
+/* Extralight */
+@font-face {
+    font-family: "GeneralSans";
+    src: url("assets/fonts/general/GeneralSans-Extralight.otf") format("opentype");
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "GeneralSans";
+    src: url("assets/fonts/general/GeneralSans-ExtralightItalic.otf") format("opentype");
+    font-weight: 200;
+    font-style: italic;
+}
+
+/* Light */
+@font-face {
+    font-family: "GeneralSans";
+    src: url("assets/fonts/general/GeneralSans-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "GeneralSans";
+    src: url("assets/fonts/general/GeneralSans-LightItalic.otf") format("opentype");
+    font-weight: 300;
+    font-style: italic;
+}
+
+/* Regular */
+@font-face {
+    font-family: "GeneralSans";
+    src: url("assets/fonts/general/GeneralSans-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "GeneralSans";
+    src: url("assets/fonts/general/GeneralSans-Italic.otf") format("opentype");
+    font-weight: 400;
+    font-style: italic;
+}
+
+/* Medium */
+@font-face {
+    font-family: "GeneralSans";
+    src: url("assets/fonts/general/GeneralSans-Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "GeneralSans";
+    src: url("assets/fonts/general/GeneralSans-MediumItalic.otf") format("opentype");
+    font-weight: 500;
+    font-style: italic;
+}
+
+/* Semibold */
+@font-face {
+    font-family: "GeneralSans";
+    src: url("assets/fonts/general/GeneralSans-Semibold.otf") format("opentype");
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "GeneralSans";
+    src: url("assets/fonts/general/GeneralSans-SemiboldItalic.otf") format("opentype");
+    font-weight: 600;
+    font-style: italic;
+}
+
+/* Bold */
+@font-face {
+    font-family: "GeneralSans";
+    src: url("assets/fonts/general/GeneralSans-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "GeneralSans";
+    src: url("assets/fonts/general/GeneralSans-BoldItalic.otf") format("opentype");
+    font-weight: 700;
+    font-style: italic;
+}
+
+/* =========================
+   Tailwind v4 Theme Tokens
+   ========================= */
+@theme {
+    --font-clash: "Clash", sans-serif;
+    --font-general: "GeneralSans", sans-serif;
+
+    --color-light: #DDDDDD;
+
+    --animate-skull: skull 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    --animate-skullslide: skullslide 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes skull {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes skullslide {
+    from{
+        transform: translateX(-100%);
+    }
+    
+    to{
+        transform: translateX(450%);
+    }
+}

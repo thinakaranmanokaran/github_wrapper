@@ -7,24 +7,24 @@ const HomeTop = ({ query, setQuery, handleClear, results, loading, handleSelectU
     return (
         <div className="flex justify-center items-center">
             <div className="text-center relative">
-                <h1 className="text-6xl font-clash font-semibold tracking-tight">
+                <h1 className="text-4xl md:text-6xl font-clash font-semibold tracking-tight">
                     Just wrap your <br /> Github profile
                 </h1>
 
-                <div className="mt-4 font-general">
+                <div className="text-sm mt-2 md:mt-4 md:text-base font-general">
                     Insert your GitHub username and know your stats and achievements of
                     the current year
                 </div>
 
                 <div className="flex flex-col items-center my-6 gap-2 w-full group">
-                    <div className="relative w-fit">
+                    <div className="relative w-fit ">
                         <input
                             type="text"
                             autoComplete="username"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             placeholder="Github username"
-                            className="border px-6 py-4 focus:outline-none w-[25vw] focus:w-[30vw] transition-all duration-300 font-general"
+                            className="border w-80 p-3 md:px-6 md:py-4 focus:outline-none md:w-[25vw] md:focus:w-[30vw] transition-all duration-300 font-general"
                         />
 
                         <button
@@ -68,7 +68,7 @@ const HomeTop = ({ query, setQuery, handleClear, results, loading, handleSelectU
                             </ul>
                         )}
                     </div>
-                    <div className="w-3/5 flex justify-end  transition-all duration-300 group-focus-within:w-[30vw]">
+                    <div className="md:w-3/5 w-80 flex justify-end  transition-all duration-300 md:group-focus-within:w-[30vw]">
                         <a
                             href="https://github.com"
                             target="_blank"

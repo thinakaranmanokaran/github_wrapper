@@ -369,25 +369,25 @@ const Home = () => {
                                 </div>
                                 :
                                 stats && stats.activeRepos && userData && (
-                                    <div ref={profileRef} className="min-w-fit max-w-3/5 p-6 rounded-3xl text-center flex flex-col font-general border-2 border-neutral-300 shadow-lg  bg-gradient-to-b to-white from-neutral-200">
-                                        <div className="flex items-center justify-between">
-                                            <div className="w-full h-full flex items-center gap-4 pl-4 group transition-all duration-300">
-                                                <div className="flex h-20 w-fit group-hover:gap-0 transition-all duration-300">
-                                                    <img src={images.BigLogo} className="w-20 rounded-full bg-white p-1" />
-                                                    <img src={userData.avatar_url} className="w-20 group-hover:translate-x-0 transition-all duration-300 -translate-x-8 object-cover rounded-full bg-white p-1" />
+                                    <div ref={profileRef} className="min-w-fit w-full  md:max-w-3/5 md:p-6 rounded-3xl text-center flex flex-col font-general border-2 border-neutral-300 shadow-lg p-2 py-4 bg-gradient-to-b to-white from-neutral-200 ">
+                                        <div className="md:flex items-center justify-between ">
+                                            <div className="w-full md:h-full flex items-center gap-3 md:gap-4 md:pl-4 group transition-all duration-300">
+                                                <div className="flex md:h-20 w-fit group-hover:gap-0 transition-all duration-300 h-14">
+                                                    <img src={images.BigLogo} className="md:w-20 w-14 rounded-full bg-white p-1" />
+                                                    <img src={userData.avatar_url} className="w-14 md:w-20 group-hover:translate-x-0 transition-all duration-300 -translate-x-6 md:-translate-x-8 object-cover rounded-full bg-white p-1" />
                                                 </div>
                                                 <div className=" flex flex-col group-hover:translate-x-0 transition-all duration-300 text-left -translate-x-8">
                                                     <div className="flex items-center gap-2 ">
-                                                        <h2 className="text-3xl font-bold tracking-tight">{userData.name || userData.login}</h2>
+                                                        <h2 className="text-xl md:text-3xl font-bold tracking-tight">{userData.name || userData.login}</h2>
                                                         {userData.login === "thinakaranmanokaran" && (<span className=" text-blue-500 text-2xl -mb-1" title="The one who Build this "><RiVerifiedBadgeFill /></span>)}
                                                     </div>
                                                     <p className="text-neutral-600">@{userData.login}</p>
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-6">
-                                                <div className="flex items-center gap-2">
+                                                <div className="md:flex items-center gap-2 my-4">
                                                     <div className="flex items-center text-4xl mr-2 font-bold  gap-0.5 "><MdPerson className="text-red-500 mt-0.5" /><span className="">{userData?.followers || 32}</span></div>
-                                                    <div className="h-8 w-[1px] bg-neutral-500 " />
+                                                    <div className="hidden md:block h-8 w-[1px] bg-neutral-500 " />
                                                     <div className="flex items-center text-4xl font-bold  gap-0.5 "><MdOutlineStar className="text-orange-400 mt-0.5" /><span className="">{userData?.total_repo_stars ?? 0}</span></div>
                                                 </div>
                                                 <button onClick={handleDownload} className="download-btn bg-black px-8 py-3 text-white rounded-full  shadow-sm shadow-black cursor-pointer before:content-[''] before:absolute before:inset-0 before:bg-zinc-200 relative before:-rotate-45 before:-translate-x-full hover:before:translate-x-full transition-all duration-1000 before:transition-all before:duration-1000 overflow-hidden">Download</button>
@@ -395,7 +395,7 @@ const Home = () => {
                                         </div>
                                         <div className="">
                                             {stats && stats.activeRepos && (
-                                                <div className="mt-6 grid grid-cols-3 gap-4 ">
+                                                <div className="mt-6 flex flex-col items-center md:grid md:grid-cols-3 gap-4 ">
                                                     <div className="border-2 relative w-80 h-52 border-neutral-300 p-4 rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between items-start">
                                                         <span className="text-xl font-medium tracking-tight text-neutral-500">Active Repos </span>
                                                         <span className="text-8xl font-semibold tracking-tighter font-clash leading-16 text-nowrap">{stats.activeRepos.length}</span>
@@ -429,11 +429,11 @@ const Home = () => {
                                                 </div>
                                             )}
                                         </div>
-                                        <div className="max-w-fit">
+                                        <div className="md:max-w-fit">
                                             {achievements.length > 0 && (
                                                 <div className="mt-16">
                                                     <h3 className="text-4xl font-medium mb-6 tracking-tighter flex justify-center items-center"><span className="text-orange-400"><RiHashtag /></span><h3 className="selection:bg-orange-400 ">Badges</h3></h3>
-                                                    <div className="flex gap-2 w-[60vw] flex-wrap justify-center">
+                                                    <div className="flex gap-2 md:w-[60vw] flex-wrap justify-center">
                                                         {achievements.map((badge) => (
                                                             <span key={badge} className="px-6 py-3 bg-black text-white rounded-full shadow-sm shadow-black before:content-[''] before:absolute before:inset-0 before:bg-zinc-200 relative before:-rotate-45 before:-translate-x-full hover:before:translate-x-full transition-all duration-1000 before:transition-all before:duration-1000 overflow-hidden pl-4">
                                                                 {badge}

@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { MdClear, MdSearch } from "react-icons/md";
+import { MdClear, MdOutlineStar, MdPerson, MdSearch } from "react-icons/md";
 import { IoArrowForward } from "react-icons/io5";
 import { FiSearch } from "react-icons/fi";
 import { HomeTop } from "../components";
 import images from "../assets/images";
 import { RiHashtag, RiVerifiedBadgeFill } from "react-icons/ri";
+import * as htmlToImage from "html-to-image";
 
 const Home = () => {
     const [query, setQuery] = useState("");
@@ -20,6 +21,7 @@ const Home = () => {
     const [achievements, setAchievements] = useState([]);
     const navigate = useNavigate();
     const debounceTimer = useRef(null);
+    const profileRef = useRef(null);
 
     //Year Calculation
     const CURRENT_YEAR = new Date().getFullYear();
@@ -273,9 +275,15 @@ const Home = () => {
                 }
             );
 
+            // ⭐ Total stars across all repos (lifetime)
+            const totalRepoStars = repoRes.data.reduce(
+                (sum, repo) => sum + repo.stargazers_count,
+                0
+            );
+
             // console.log(res.data);
             // console.log(repoRes.data.map(repo => repo.name));
-            setUserData(res.data); // ✅ store here
+            setUserData({ ...res.data, total_repo_stars: totalRepoStars, }); // ✅ store here
             setRepoData(repoRes.data);
             const computedStats = await calculateStats(username, repoRes.data);
             setStats(computedStats);
@@ -286,6 +294,38 @@ const Home = () => {
             setError("Failed to fetch user data.");
         } finally {
             setProfileLoading(false);
+        }
+    };
+
+    const handleDownload = async () => {
+        if (!profileRef.current) return;
+
+        const buttons = profileRef.current.querySelectorAll(".download-btn");
+
+        try {
+            // 🧼 Remove button from layout
+            buttons.forEach(btn => {
+                btn.dataset.prevDisplay = btn.style.display;
+                btn.style.display = "none";
+            });
+
+            const dataUrl = await htmlToImage.toPng(profileRef.current, {
+                cacheBust: true,
+                pixelRatio: 2,
+            });
+
+            const link = document.createElement("a");
+            link.download = `${userData.login}-github-wrapped.png`;
+            link.href = dataUrl;
+            link.click();
+        } catch (err) {
+            console.error("Image download failed", err);
+        } finally {
+            // ♻️ Restore button
+            buttons.forEach(btn => {
+                btn.style.display = btn.dataset.prevDisplay || "";
+                delete btn.dataset.prevDisplay;
+            });
         }
     };
 
@@ -329,7 +369,7 @@ const Home = () => {
                                 </div>
                                 :
                                 stats && stats.activeRepos && userData && (
-                                    <div className="min-w-fit max-w-3/5 p-6 rounded-3xl text-center flex flex-col font-general border-2 border-neutral-300 shadow-lg  bg-gradient-to-b to-white from-neutral-200">
+                                    <div ref={profileRef} className="min-w-fit max-w-3/5 p-6 rounded-3xl text-center flex flex-col font-general border-2 border-neutral-300 shadow-lg  bg-gradient-to-b to-white from-neutral-200">
                                         <div className="flex items-center justify-between">
                                             <div className="w-full h-full flex items-center gap-4 pl-4 group transition-all duration-300">
                                                 <div className="flex h-20 w-fit group-hover:gap-0 transition-all duration-300">
@@ -344,38 +384,45 @@ const Home = () => {
                                                     <p className="text-neutral-600">@{userData.login}</p>
                                                 </div>
                                             </div>
-                                            <button className="bg-black px-8 py-3 text-white rounded-full  shadow-sm shadow-black cursor-pointer before:content-[''] before:absolute before:inset-0 before:bg-zinc-200 relative before:-rotate-45 before:-translate-x-full hover:before:translate-x-full transition-all duration-1000 before:transition-all before:duration-1000 overflow-hidden">Download</button>
+                                            <div className="flex items-center gap-6">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="flex items-center text-4xl mr-2 font-bold  gap-0.5 "><MdPerson className="text-red-500 mt-0.5" /><span className="">{userData?.followers || 32}</span></div>
+                                                    <div className="h-8 w-[1px] bg-neutral-500 " />
+                                                    <div className="flex items-center text-4xl font-bold  gap-0.5 "><MdOutlineStar className="text-orange-400 mt-0.5" /><span className="">{userData?.total_repo_stars ?? 0}</span></div>
+                                                </div>
+                                                <button onClick={handleDownload} className="download-btn bg-black px-8 py-3 text-white rounded-full  shadow-sm shadow-black cursor-pointer before:content-[''] before:absolute before:inset-0 before:bg-zinc-200 relative before:-rotate-45 before:-translate-x-full hover:before:translate-x-full transition-all duration-1000 before:transition-all before:duration-1000 overflow-hidden">Download</button>
+                                            </div>
                                         </div>
                                         <div className="">
                                             {stats && stats.activeRepos && (
                                                 <div className="mt-6 grid grid-cols-3 gap-4 ">
                                                     <div className="border-2 relative w-80 h-52 border-neutral-300 p-4 rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between items-start">
-                                                        <span className="text-xl font-medium tracking-tight">Active Repos </span>
+                                                        <span className="text-xl font-medium tracking-tight text-neutral-500">Active Repos </span>
                                                         <span className="text-8xl font-semibold tracking-tighter font-clash leading-16 text-nowrap">{stats.activeRepos.length}</span>
                                                         <img src={images.Trophy} alt="Trophy" className="absolute top-4 right-4 w-20" />
                                                     </div>
                                                     <div className="border-2 relative w-80 h-52 border-neutral-300 p-4 rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between items-start">
-                                                        <span className="text-xl font-medium tracking-tight">Commits </span>
+                                                        <span className="text-xl font-medium tracking-tight text-neutral-500">Commits </span>
                                                         <span className="text-8xl font-semibold tracking-tighter font-clash leading-16 text-nowrap">{stats.totalCommits}</span>
                                                         <img src={images.Commits} alt="Commits" className="absolute top-4 right-4 w-20" />
                                                     </div>
                                                     <div className="border-2 relative w-80 h-52 border-neutral-300 p-4 rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between items-start">
-                                                        <span className="text-xl font-medium tracking-tight">Stars </span>
+                                                        <span className="text-xl font-medium tracking-tight text-neutral-500">Stars </span>
                                                         <span className="text-8xl font-semibold tracking-tighter font-clash leading-16 text-nowrap">{stats.starsGained}</span>
                                                         <img src={images.Star} alt="Top Repo" className="absolute top-4 right-4 w-20" />
                                                     </div>
                                                     <div className="border-2 relative w-80 h-52 border-neutral-300 p-4 rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between items-start">
-                                                        <span className="text-xl font-medium tracking-tight">Top Repo </span>
+                                                        <span className="text-xl font-medium tracking-tight text-neutral-500">Top Repo </span>
                                                         <span className="text-4xl font-medium text-nowrap  tracking-tighter">{stats.mostContributedRepo}</span>
                                                         <img src={images.TopRepo} alt="Top Repo" className="absolute top-0 -right-0 w-20" />
                                                     </div>
                                                     <div className="border-2 relative w-80 h-52 border-neutral-300 p-4 rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between items-start">
-                                                        <span className="text-xl font-medium tracking-tight">Top Language </span>
+                                                        <span className="text-xl font-medium tracking-tight text-neutral-500">Top Language </span>
                                                         <span className="text-4xl font-medium tracking-tighter text-nowrap">{stats.topLanguages[0]?.[0] || 'N/A'}</span>
                                                         <img src={images.Languages} alt="Top Language" className="absolute top-0 -right-0 w-20" />
                                                     </div>
                                                     <div className="border-2 relative w-80 h-52 border-neutral-300 p-4 rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between items-start">
-                                                        <span className="text-xl font-medium tracking-tight">Consistency </span>
+                                                        <span className="text-xl font-medium tracking-tight text-neutral-500">Consistency </span>
                                                         <span className="text-4xl font-medium tracking-tighter text-nowrap">{new Date(0, stats.mostActiveMonth).toLocaleString("default", { month: "long" })}</span>
                                                         <img src={images.Month} alt="Top Repo" className="absolute top-4 right-4 w-20" />
                                                     </div>

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://thinakaranmanokaran.github.io/github_wrapper/sitemap.xml

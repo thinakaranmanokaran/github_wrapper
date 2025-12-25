@@ -10,7 +10,7 @@
 
 GitHub Wrapper is a web application that generates a **GitHub Wrapped-style summary** of your year in open source. Just enter a GitHub username and instantly get a shareable card showing commits, repositories, stars, top languages, consistency, and achievement badges.
 
-🔗 **Live Site:** [https://thinakaranmanokaran.github.io/github_wrapper](https://thinakaranmanokaran.github.io/github_wrapper)
+🔗 **Live Site:** [https://git-wrapper.netlify.app](https://git-wrapper.netlify.app)
 📦 **Repository:** [https://github.com/thinakaranmanokaran/github_wrapper](https://github.com/thinakaranmanokaran/github_wrapper)
 
 ---

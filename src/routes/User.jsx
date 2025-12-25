@@ -8,6 +8,7 @@ const User = () => {
         <Routes>
             <Route element={<Public />}>
                 <Route index element={<Home />} />
+                <Route path="/:username" element={<Home />} />
             </Route>
         </Routes>
     )

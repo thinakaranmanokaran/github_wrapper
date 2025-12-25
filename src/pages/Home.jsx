@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { MdClear, MdOutlineStar, MdPerson, MdSearch } from "react-icons/md";
+import { useNavigate, useParams } from "react-router-dom";
+import { MdClear, MdContentCopy, MdOutlineFileDownload, MdOutlineShare, MdOutlineStar, MdPerson, MdSearch } from "react-icons/md";
 import { IoArrowForward } from "react-icons/io5";
 import { FiSearch } from "react-icons/fi";
 import { HomeTop } from "../components";
@@ -19,9 +19,14 @@ const Home = () => {
     const [profileLoading, setProfileLoading] = useState(null);
     const [stats, setStats] = useState(null);
     const [achievements, setAchievements] = useState([]);
+    const [bgChange, setBgChange] = useState(false);
+    const [shareMenu, setShareMenu] = useState(false);
     const navigate = useNavigate();
     const debounceTimer = useRef(null);
     const profileRef = useRef(null);
+
+    const { username } = useParams();
+    const isUsernameInParams = username ? true : false
 
     //Year Calculation
     const CURRENT_YEAR = new Date().getFullYear();
@@ -76,17 +81,31 @@ const Home = () => {
 
     // Watch query
     useEffect(() => {
+        // if (username) return; // 🚫 disable search if param exists
+
         if (query) debouncedSearch(query);
         else setResults([]);
 
         return () => clearTimeout(debounceTimer.current);
-    }, [query, debouncedSearch]);
+    }, [query, debouncedSearch, username]);
 
     const handleClear = () => {
         setQuery("");
         setResults([]);
         setError("");
     };
+
+    // Username Fetch form URL
+    useEffect(() => {
+        if (!username) return;
+
+        // clear search UI
+        setQuery("");
+        setResults([]);
+
+        // fetch profile directly
+        handleSelectUser(username);
+    }, [username]);
 
     // Calculation of Stats
     const calculateStats = async (username, repos) => {
@@ -329,6 +348,42 @@ const Home = () => {
         }
     };
 
+    // Copy Link
+    const handleCopyLink = async (currUsername) => {
+        try {
+            const url = `${window.location.href}${currUsername}`;
+            await navigator.clipboard.writeText(url);
+            // Optionally, show a notification or toast here
+            // Assuming react-toastify is installed and imported
+            alert('Link copied!');
+        } catch (err) {
+            console.error('Failed to copy link', err);
+        }
+    };
+
+    const handleGlobalShare = async (currUsername) => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'GitHub Wrapped',
+                    text: `Check out ${userData.login}'s GitHub Wrapped!`,
+                    url: `${window.location.href}${currUsername}`,
+                });
+            } catch (err) {
+                console.error('Share failed', err);
+            }
+        } else {
+            // Fallback to copy link
+            handleCopyLink();
+        }
+    };
+    // Global Share
+
+    function changeBG() {
+        setBgChange(!bgChange);
+        setShareMenu(!shareMenu);
+    }
+
     return (
         <div className="py-6">
             <HomeTop handleClear={handleClear} query={query} setQuery={setQuery} results={results} loading={loading} handleSelectUser={handleSelectUser} error={error} />
@@ -339,19 +394,19 @@ const Home = () => {
                             profileLoading ?
                                 <div className="min-w-fit max-w-3/5 p-6 rounded-3xl text-center flex flex-col font-general border-2 border-neutral-300 animate-skull shadow-lg  bg-gradient-to-b to-white from-neutral-200">
                                     <div className="flex items-center gap-4 pl-4 transition-all duration-300">
-                                        <div className="flex h-20 w-fit transition-all duration-300">
-                                            <div className="w-20 h-20 rounded-full bg-neutral-300 p-1" />
-                                            <div className="w-20 h-20 transition-all duration-300 -translate-x-8 object-cover rounded-full bg-neutral-200 p-1  " />
+                                        <div className="flex md:h-20 w-fit transition-all duration-300">
+                                            <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-neutral-300 p-1" />
+                                            <div className="w-14 h-14 md:w-20 md:h-20 transition-all duration-300 -translate-x-4 md:-translate-x-8 object-cover rounded-full bg-neutral-200 p-1  " />
                                         </div>
-                                        <div className=" flex flex-col transition-all duration-300 text-left -translate-x-8">
-                                            <div className="flex items-center flex-col  gap-2 ">
-                                                <div className="text-3xl font-bold tracking-tight h-4 w-40 rounded-xl bg-neutral-300"></div>
-                                                <div className="text-3xl font-bold tracking-tight h-4 w-40 rounded-xl bg-neutral-300"></div>
+                                        <div className=" flex flex-col justify-center transition-all duration-300 text-left h-full -translate-x-8">
+                                            <div className="flex items-center justify-center flex-col gap-2 ">
+                                                <div className="text-3xl font-bold tracking-tight h-3 w-28 md:h-4 md:w-40 rounded-xl bg-neutral-300"></div>
+                                                <div className="text-3xl font-bold tracking-tight h-3 w-28 md:h-4 md:w-40 rounded-xl bg-neutral-300"></div>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="">
-                                        <div className="mt-6 grid grid-cols-3 gap-4">
+                                        <div className="mt-6 grid md:grid-cols-3 gap-4">
                                             <div className="border-2 relative w-80 h-52 border-neutral-300 p-4 rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between items-start before:content-[''] before:h-[1000px] before:w-20 before:-translate-y-1/2 before:top-1/2 before:bg-light/80 before:rotate-45 before:-translate-x-[100%] before:absolute before:animate-skullslide ">
                                             </div>
                                             <div className="border-2 relative w-80 h-52 border-neutral-300 p-4 rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between items-start before:content-[''] before:h-[1000px] before:w-20 before:-translate-y-1/2 before:top-1/2 before:bg-light/80 before:rotate-45 before:-translate-x-[100%] before:absolute before:animate-skullslide ">
@@ -384,18 +439,34 @@ const Home = () => {
                                                     <p className="text-neutral-600">@{userData.login}</p>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-6">
+                                            {
+                                                !isUsernameInParams && <div className="md:hidden flex p-4 justify-end gap-2 text-xl ">
+                                                    <button onClick={() => handleCopyLink(userData.login)} className="bg-white shadow-sm p-2 rounded-xl "><MdContentCopy /></button>
+                                                    <button onClick={handleDownload} className="bg-white shadow-sm p-2 rounded-xl "><MdOutlineFileDownload /></button>
+                                                    <button onClick={() => handleGlobalShare(userData.login)} className="bg-white shadow-sm p-2 rounded-xl "><MdOutlineShare /></button>
+                                                </div>
+                                            }
+                                            <div className="hidden md:flex items-center gap-6 relative">
                                                 <div className="md:flex items-center gap-2 my-4">
                                                     <div className="flex items-center text-4xl mr-2 font-bold  gap-0.5 "><MdPerson className="text-red-500 mt-0.5" /><span className="">{userData?.followers || 32}</span></div>
                                                     <div className="hidden md:block h-8 w-[1px] bg-neutral-500 " />
                                                     <div className="flex items-center text-4xl font-bold  gap-0.5 "><MdOutlineStar className="text-orange-400 mt-0.5" /><span className="">{userData?.total_repo_stars ?? 0}</span></div>
                                                 </div>
-                                                <button onClick={handleDownload} className="download-btn bg-black px-8 py-3 text-white rounded-full  shadow-sm shadow-black cursor-pointer before:content-[''] before:absolute before:inset-0 before:bg-zinc-200 relative before:-rotate-45 before:-translate-x-full hover:before:translate-x-full transition-all duration-1000 before:transition-all before:duration-1000 overflow-hidden">Download</button>
+                                                {/*  */}
+                                                {!isUsernameInParams && <button onClick={changeBG} className={`download-btn bg-black px-8 py-3 text-white rounded-full  shadow-sm shadow-black cursor-pointer before:content-[''] before:absolute before:inset-0 before:bg-zinc-200 relative before:-rotate-45 before:-translate-x-full hover:before:translate-x-full transition-all duration-1000 before:transition-all before:duration-1000 overflow-hidden z-20 ${bgChange ? "outline-8 outline-white" : ""}`}>Share</button>}
+                                                {
+                                                    shareMenu && <div className="bg-white download-btn absolute right-0 shadow-md top-20 z-20  rounded-3xl flex flex-col p-3 ">
+                                                        <button className="px-3 transition-all duration-300 cursor-pointer py-1.5 hover:bg-neutral-300 rounded-2xl" onClick={() => handleCopyLink(userData.login)}>Copy Link</button>
+                                                        <button onClick={handleDownload} className="px-3 transition-all duration-300 cursor-pointer py-1.5 hover:bg-neutral-300 rounded-2xl">Download</button>
+                                                        <button className="px-3 transition-all duration-300 cursor-pointer py-1.5 hover:bg-neutral-300 rounded-2xl" onClick={() => handleGlobalShare(userData.login)}>Share</button>
+                                                    </div>
+                                                }
+                                                {bgChange && <div className="bg-neutral-500/40 fixed z-10 h-screen w-screen top-0 left-0 download-btn"></div>}
                                             </div>
                                         </div>
                                         <div className="">
                                             {stats && stats.activeRepos && (
-                                                <div className="mt-6 flex flex-col items-center md:grid md:grid-cols-3 gap-4 ">
+                                                <div className="mt-6 flex flex-col items-center md:grid  md:grid-cols-2 lg:grid-cols-3 gap-4 ">
                                                     <div className="border-2 relative w-80 h-52 border-neutral-300 p-4 rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between items-start">
                                                         <span className="text-xl font-medium tracking-tight text-neutral-500">Active Repos </span>
                                                         <span className="text-8xl font-semibold tracking-tighter font-clash leading-16 text-nowrap">{stats.activeRepos.length}</span>

@@ -21,7 +21,7 @@ const Header = () => {
                     <a href="https://thinakaran.dev/" target="_blank" rel="noopener noreferrer" className="">Developer</a>
                 </div>
             </div>
-            <div className="h-[1px] w-4/5 mx-auto bg-black/30 mt-2 md:mt-4"></div>
+            <div className="h-[1px] w-4/5 mx-auto bg-black/30 dark:bg-white/30 mt-2 md:mt-4"></div>
         </div>
     )
 }

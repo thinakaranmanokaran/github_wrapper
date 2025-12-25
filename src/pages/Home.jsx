@@ -424,7 +424,7 @@ const Home = () => {
                                 </div>
                                 :
                                 stats && stats.activeRepos && userData && (
-                                    <div ref={profileRef} className="min-w-fit w-full  md:max-w-3/5 md:p-6 rounded-3xl text-center flex flex-col font-general border-2 border-neutral-300 shadow-lg p-2 py-4 bg-gradient-to-b to-white from-neutral-200 ">
+                                    <div ref={profileRef} className="min-w-fit w-full  md:max-w-3/5 md:p-6 rounded-3xl text-center flex flex-col font-general border-2 border-neutral-300 shadow-lg p-2 py-4 bg-gradient-to-b to-white from-neutral-200 dark:text-black">
                                         <div className="md:flex items-center justify-between ">
                                             <div className="w-full md:h-full flex items-center gap-3 md:gap-4 md:pl-4 group transition-all duration-300">
                                                 <div className="flex md:h-20 w-fit group-hover:gap-0 transition-all duration-300 h-14">

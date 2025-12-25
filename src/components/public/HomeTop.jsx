@@ -29,7 +29,7 @@ const HomeTop = ({ query, setQuery, handleClear, results, loading, handleSelectU
 
                         <button
                             onClick={handleClear}
-                            className="absolute right-0 top-0 h-full w-12 bg-black text-white flex items-center justify-center transition-all enabled:cursor-pointer disabled:cursor-not-allowed duration-300 disabled:bg-neutral-600"
+                            className="absolute right-0 top-0 h-full w-12 bg-black dark:bg-white dark:enabled:text-black text-white flex items-center justify-center transition-all enabled:cursor-pointer disabled:cursor-not-allowed duration-300 disabled:bg-neutral-600"
                             disabled={loading || results.length < 1 || query.length < 1}
                         >
                             {loading ? (
@@ -43,12 +43,12 @@ const HomeTop = ({ query, setQuery, handleClear, results, loading, handleSelectU
 
                         {/* Dropdown */}
                         {results.length > 0 && (
-                            <ul className="absolute left-0 right-0 mt-2 bg-white border border-neutral-600 py-2  shadow-lg max-h-80 overflow-y-auto z-20">
+                            <ul className="absolute left-0 right-0 mt-2 dark:bg-black bg-white border border-neutral-600 py-2  shadow-lg max-h-80 overflow-y-auto z-20">
                                 {results.slice(0, 5).map((user) => (
                                     <li
                                         key={user.id}
                                         onClick={() => handleSelectUser(user.login)}
-                                        className="group/item flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-light transition"
+                                        className="group/item flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-light transition dark:hover:bg-neutral-800"
                                     >
                                         <img
                                             src={user.avatar_url}

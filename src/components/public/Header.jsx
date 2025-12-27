@@ -18,7 +18,8 @@ const Header = () => {
                 </Link>
                 <div className="hidden md:flex items-center gap-4 font-general text-lg pr-4">
                     <a href="https://github.com/thinakaranmanokaran/github_wrapper" target="_blank" rel="noopener noreferrer" className="">Github</a>
-                    <a href="https://thinakaran.dev/" target="_blank" rel="noopener noreferrer" className="">Developer</a>
+                    {/* <a href="https://thinakaran.dev/" target="_blank" rel="noopener noreferrer" className="">Developer</a> */}
+                    <Link to="/thinakaranmanokaran" className="">Developer's Stats</Link>
                 </div>
             </div>
             <div className="h-[1px] w-4/5 mx-auto bg-black/30 dark:bg-white/30 mt-2 md:mt-4"></div>

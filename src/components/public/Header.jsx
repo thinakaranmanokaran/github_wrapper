@@ -6,7 +6,7 @@ const Header = () => {
 
     //Reload function
     const Reload = () => {
-        window.location.reload();
+        window.location.href = "/";
     };
 
     return (
